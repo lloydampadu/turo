@@ -1,0 +1,922 @@
+import { HomeSheet, MapHeader } from "../../components/index";
+import uidata from "../../constants/uidata";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { MapListings } from "../../components";
+
+const Page = () => {
+  return (
+    <View style={{ flex: 1 }}>
+      <StatusBar
+        barStyle="dark-content"
+        hidden={false}
+        backgroundColor="#00BCD4"
+        translucent={true}
+      />
+
+      {/* <MapHeader /> */}
+      <Stack.Screen
+        options={{
+          header: () => <MapHeader />,
+        }}
+      />
+
+      <MapListings />
+
+      <HomeSheet listings={uidata.productListings} />
+    </View>
+  );
+};
+
+export default Page;
+
+
+// File: App.js
+// import React, { useState, useEffect } from "react";
+// import {
+//   View,
+//   Text,
+//   Button,
+//   FlatList,
+//   Image,
+//   TouchableOpacity,
+//   StyleSheet,
+// } from "react-native";
+// import * as MediaLibrary from "expo-media-library";
+
+// export default function App() {
+//   const [permissionGranted, setPermissionGranted] = useState(false);
+//   const [assets, setAssets] = useState([]);
+//   const [selectedImage, setSelectedImage] = useState(null);
+
+//   // Request permission to access the media library
+//   const requestPermission = async () => {
+//     const { status } = await MediaLibrary.requestPermissionsAsync();
+//     setPermissionGranted(status === "granted");
+//   };
+
+//   // Fetch media assets from the library
+//   const fetchAssets = async () => {
+//     if (permissionGranted) {
+//       const { assets } = await MediaLibrary.getAssetsAsync({
+//         mediaType: "photo",
+//         first: 50, // fetch first 50 images
+//       });
+//       setAssets(assets);
+//     } else {
+//       alert("Permission to access media library is required.");
+//     }
+//   };
+
+//   useEffect(() => {
+//     requestPermission();
+//   }, []);
+
+//   return (
+//     <View style={styles.container}>
+//       <Button title="Fetch Media Assets" onPress={fetchAssets} />
+//       {selectedImage && (
+//         <Image
+//           source={{ uri: selectedImage.uri }}
+//           style={styles.selectedImage}
+//         />
+//       )}
+//       <FlatList
+//         data={assets}
+//         keyExtractor={(item) => item.id}
+//         renderItem={({ item }) => (
+//           <TouchableOpacity onPress={() => setSelectedImage(item)}>
+//             <Image source={{ uri: item.uri }} style={styles.image} />
+//           </TouchableOpacity>
+//         )}
+//         numColumns={3}
+//       />
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+//   image: {
+//     width: 100,
+//     height: 100,
+//     margin: 5,
+//   },
+//   selectedImage: {
+//     width: 300,
+//     height: 300,
+//     margin: 10,
+//     borderColor: "blue",
+//     borderWidth: 2,
+//   },
+// });
+
+
+import {
+//   Button,
+//   Image,
+//   Platform,
+//   StyleSheet,
+//   Text,
+//   View,
+//   TouchableOpacity,
+//   SafeAreaView,
+// } from "react-native";
+// import React, { useState } from "react";
+// import { Formik } from "formik";
+// import { TextInput } from "react-native";
+// import { HeightSpacer } from "./../../components/index";
+// import { Picker } from "@react-native-picker/picker";
+// import * as ImagePicker from "expo-image-picker";
+
+// const index = () => {
+//   const [image, setImage] = useState(null);
+
+//   const pickImage = async () => {
+//     // No permissions request is necessary for launching the image library
+//     let result = await ImagePicker.launchImageLibraryAsync({
+//       mediaTypes: ImagePicker.MediaTypeOptions.All,
+//       allowsEditing: true,
+//       aspect: [4, 3],
+//       quality: 1,
+//     });
+
+//     console.log(result);
+
+//     if (!result.canceled) {
+//       setImage(result.assets[0].uri);
+//     }
+//   };
+
+//   const onSubmitMethod = (value) => {
+//     value.image = image;
+//     console.log(value);
+//   };
+
+//   const numberOfLines = 5;
+//   return (
+//     <SafeAreaView style={{ marginHorizontal: 12 }}>
+//       <Formik
+//         initialValues={{
+//           title: "",
+//           desc: "",
+//           category: "",
+//           address: "",
+//           image: "",
+//         }}
+//         onSubmit={(value) => onSubmitMethod(value)}
+//         validate={(values) => {
+//           const errors = {};
+//           if (!values.title) {
+//             console.log("Title not present");
+//             errors.name = "title must be there";
+//           }
+//           return errors;
+//         }}
+//       >
+//         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+//           <View>
+//             <TouchableOpacity onPress={pickImage}>
+//               {image ? (
+//                 <Image
+//                   source={{ uri: image }}
+//                   style={{ width: 100, height: 100, borderRadius: 10 }}
+//                 />
+//               ) : (
+//                 <Image
+//                   source={require("./../../assets/images/image-processing.png")}
+//                   style={{ width: 100, height: 100, borderRadius: 10 }}
+//                 />
+//               )}
+//             </TouchableOpacity>
+
+//             <HeightSpacer height={15} />
+
+//             <TextInput
+//               style={styles.input}
+//               placeholder="Title"
+//               values={values?.title}
+//               onChangeText={handleChange("title")}
+//             />
+
+//             <HeightSpacer height={15} />
+
+//             <TextInput
+//               style={styles.input}
+//               placeholder="Description"
+//               values={values?.desc}
+//               numberOfLines={Platform.OS === "ios" ? null : numberOfLines}
+//               minHeight={
+//                 Platform.OS === "ios" && numberOfLines
+//                   ? 20 * numberOfLines
+//                   : null
+//               }
+//               onChangeText={handleChange("desc")}
+//             />
+
+//             <HeightSpacer height={15} />
+
+//             <TextInput
+//               style={styles.input}
+//               placeholder="Price"
+//               values={values?.price}
+//               keyboardType="number-pad"
+//               onChangeText={handleChange("price")}
+//             />
+
+//             <HeightSpacer height={15} />
+
+//             <Picker
+//               selectedValue={values?.category}
+//               onValueChange={handleChange}
+//             >
+//               <Picker.Item label="Dropdown1" value={"Dropdown"} />
+//             </Picker>
+
+//             <HeightSpacer height={15} />
+
+//             <Button onPress={handleSubmit} title="submit" />
+//           </View>
+//         )}
+//       </Formik>
+//     </SafeAreaView>
+//   );
+// };
+
+// export default index;
+
+// const styles = StyleSheet.create({
+//   input: {
+//     borderWidth: 1,
+//     borderRadius: 10,
+//     padding: 10,
+//     // textAlignVertical: "top",
+//   },
+// });
+
+
+
+// File: App.js
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import * as MediaLibrary from "expo-media-library";
+
+export default function App() {
+  const [permissionGranted, setPermissionGranted] = useState(false);
+  const [assets, setAssets] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  // Request permission to access the media library
+  const requestPermission = async () => {
+    try {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      setPermissionGranted(status === "granted");
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission denied",
+          "Permission to access media library is required."
+        );
+      }
+    } catch (error) {
+      Alert.alert("Error", "An error occurred while requesting permissions.");
+    }
+  };
+
+  // Fetch media assets from the library
+  const fetchAssets = async () => {
+    try {
+      if (permissionGranted) {
+        const { assets } = await MediaLibrary.getAssetsAsync({
+          mediaType: MediaLibrary.MediaType.photo,
+          first: 50, // fetch first 50 images
+        });
+        setAssets(assets);
+      }
+    } catch (error) {
+      Alert.alert("Error", "An error occurred while fetching assets.");
+    }
+  };
+
+  // Toggle image selection
+  const toggleImageSelection = (image) => {
+    setSelectedImages((prevSelectedImages) => {
+      if (prevSelectedImages.some((img) => img.id === image.id)) {
+        return prevSelectedImages.filter((img) => img.id !== image.id);
+      } else {
+        return [...prevSelectedImages, image];
+      }
+    });
+  };
+
+  useEffect(() => {
+    requestPermission();
+  }, []);
+
+  useEffect(() => {
+    if (permissionGranted) {
+      fetchAssets();
+    }
+  }, [permissionGranted]);
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={assets}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => toggleImageSelection(item)}>
+            <Image
+              source={{ uri: item.uri }}
+              style={[
+                styles.image,
+                selectedImages.some((img) => img.id === item.id) &&
+                  styles.selectedImage,
+              ]}
+            />
+          </TouchableOpacity>
+        )}
+        numColumns={4}
+      />
+      {selectedImages.length > 0 && (
+        <View style={styles.selectedImagesContainer}>
+          {selectedImages.map((image) => (
+            <Image
+              key={image.id}
+              source={{ uri: image.uri }}
+              style={styles.selectedThumbnail}
+            />
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: 100,
+    height: 100,
+    margin: 2,
+  },
+  selectedImage: {
+    borderColor: "blue",
+    borderWidth: 2,
+  },
+  selectedImagesContainer: {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+    right: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  selectedThumbnail: {
+    width: 50,
+    height: 50,
+    margin: 2,
+  },
+});
+
+
+
+import { Ionicons } from "@expo/vector-icons";
+import { CameraView, useCameraPermissions } from "expo-camera";
+import { useState } from "react";
+import {
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+
+export default function App() {
+  const [facing, setFacing] = useState("back");
+  const [permission, requestPermission] = useCameraPermissions();
+
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  if (!permission) {
+    // Camera permissions are still loading.
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
+  }
+
+  return (
+    <View style={styles.container}>
+      <StatusBar style="black" hidden backgroundColor="black" />
+
+      <View style={{ backgroundColor: "black", height: 25 }} />
+
+      <CameraView style={styles.camera} facing={facing}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            margin: 10,
+            marginTop: 20,
+          }}
+        >
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="close-outline" size={30} color={"white"} />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="flash-outline" size={30} color={"white"} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={pickImage}>
+            <Ionicons name="image-outline" size={30} color={"white"} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={toggleCameraFacing}
+            style={{
+              backgroundColor: "transparent",
+              width: 80,
+              height: 80,
+              alignItems: "center",
+              justifyContent: "center",
+              borderWidth: 2,
+              borderColor: "white",
+              borderRadius: 99,
+            }}
+          >
+            <View
+              style={{
+                width: 60,
+                height: 60,
+                backgroundColor: "white",
+                borderRadius: 99,
+              }}
+            ></View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Ionicons name="camera-reverse-outline" size={30} color={"white"} />
+          </TouchableOpacity>
+        </View>
+      </CameraView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    position: "absolute",
+    width: "100%",
+    bottom: 50,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  button: {
+    backgroundColor: "rgba(0,0,0, 0.5)",
+    width: 50,
+    aspectRatio: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 99,
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+  },
+});
+
+
+
+Cameroll with media
+
+import { Ionicons } from "@expo/vector-icons";
+import { CameraView, useCameraPermissions } from "expo-camera";
+import { useState } from "react";
+import {
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+
+export default function App() {
+  const [facing, setFacing] = useState("back");
+  const [permission, requestPermission] = useCameraPermissions();
+  const [isLoading, setIsLoading] = useState(false);
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    setIsLoading(true);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: true,
+      // allowsEditing: true,
+      selectionLimit: 10,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+ 
+    if (!result.canceled) {
+      setImage(result.assets.uri ? [result.uri] : result.selected);
+      console.log("gun");
+      // router.pushb("/(modals)/filter");
+      // uter.push(`/(add product)/add
+    }
+  };
+  if (!permission) {
+    // Camera permissions are still loading.
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
+  }
+
+  return (
+    <View style={styles.container}>
+      <StatusBar style="black" hidden backgroundColor="black" />
+
+      <View style={{ backgroundColor: "black", height: 25 }} />
+
+      <CameraView style={styles.camera} facing={facing}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            margin: 10,
+            marginTop: 20,
+          }}
+        >
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="close-outline" size={30} color={"white"} />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="flash-outline" size={30} color={"white"} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={pickImage}>
+            <Ionicons name="image-outline" size={30} color={"white"} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={toggleCameraFacing}
+            style={{
+              backgroundColor: "transparent",
+              width: 80,
+              height: 80,
+              alignItems: "center",
+              justifyContent: "center",
+              borderWidth: 2,
+              borderColor: "white",
+              borderRadius: 99,
+            }}
+          >
+            <View
+              style={{
+                width: 60,
+                height: 60,
+                backgroundColor: "white",
+                borderRadius: 99,
+              }}
+            ></View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <Ionicons name="camera-reverse-outline" size={30} color={"white"} />
+          </TouchableOpacity>
+        </View>
+      </CameraView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    position: "absolute",
+    width: "100%",
+    bottom: 50,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  button: {
+    backgroundColor: "rgba(0,0,0, 0.5)",
+    width: 50,
+    aspectRatio: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 99,
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+  },
+});
+
+
+
+
+
+
+
+
+import React from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  TextInput,
+  Image,
+  Button,
+} from "react-native";
+import { Stack, useRouter } from "expo-router"; // Make sure you import useRouter
+import { Formik } from "formik";
+import ReusableText from "@/components/Reusable/ReusableText";
+import ReusableBtn from "@/components/Reusable/ReusableBtn";
+import HeightSpacer from "@/components/Reusable/HeightSpacer";
+import { COLORS, SIZES } from "@/constants/theme";
+import useFormStore from "./../../hooks/useFormStore"; // Adjust the path accordingly
+
+const Index = () => {
+  const router = useRouter(); // Get the router object for navigation
+  const { formData, setFormData } = useFormStore(); // Get Zustand store data and setter
+
+  const onSubmitMethod = (values) => {
+    // Log the input data
+    console.log("Form Values:", values);
+
+    // Update the store with form values
+    setFormData(values);
+
+    // Navigation logic here, pushing to the home page with values
+    router.push("(tabs)/home", { data: values });
+  };
+
+  return (
+    <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+      />
+      <View
+        style={{
+          gap: 15,
+          marginHorizontal: 12,
+          marginTop: 40,
+          marginBottom: 40,
+        }}
+      >
+        <ReusableText
+          text={"Jobizz"}
+          family={"bold"}
+          size={SIZES.medium}
+          color={"#356899"}
+        />
+        <ReusableText
+          text={"Welcome Back 👋"}
+          family={"bold"}
+          size={SIZES.large}
+          color={"black"}
+        />
+        <ReusableText
+          text={"Let's log in. Apply to jobs!"}
+          family={"regular"}
+          size={SIZES.small}
+          color={"gray"}
+        />
+      </View>
+
+      <View style={{ marginHorizontal: 12, gap: 15 }}>
+        <Formik
+          initialValues={formData} // Initialize with data from the store
+          onSubmit={onSubmitMethod}
+          validate={(values) => {
+            const errors = {};
+            if (!values.name) {
+              errors.name = "name must be there";
+            }
+            if (!values.email) {
+              errors.email = "name must be there";
+            }
+            return errors;
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+            <View>
+              <TextInput
+                style={styles.input}
+                placeholder="name"
+                value={values.name}
+                onChangeText={handleChange("name")}
+              />
+
+              <HeightSpacer height={15} />
+
+              <TextInput
+                style={styles.input}
+                placeholder="email"
+                value={values.email}
+                onChangeText={handleChange("email")}
+              />
+
+              <HeightSpacer height={15} />
+
+              <ReusableBtn
+                btnText={"Login"}
+                onPress={handleSubmit} // Call handleSubmit to trigger form submission
+                textColor={COLORS.white}
+                width={"100%"}
+                backgroundColor={COLORS.black}
+                borderWidth={1}
+                borderColor={COLORS.black}
+                fontSize={"medium"}
+                height={50}
+                borderRadius={6}
+              />
+            </View>
+          )}
+        </Formik>
+      </View>
+
+    <View
+        style={{
+          marginHorizontal: 12,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            height: 1,
+            width: SIZES.width / 3.5,
+            backgroundColor: COLORS.gray,
+          }}
+        />
+
+        <View>
+          <ReusableText
+            text={"or continue with "}
+            family={"regular"}
+            size={SIZES.small}
+            color={"gray"}
+          />
+        </View>
+        <View
+          style={{
+            height: 1,
+            width: SIZES.width / 3.5,
+            backgroundColor: COLORS.gray,
+          }}
+        />
+      </View>
+
+      <HeightSpacer height={40} />
+
+      <View
+        style={{
+          marginHorizontal: 12,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 30,
+        }}
+      >
+        <Image source={require("./../../assets/images/apple.png")} />
+        <Image source={require("./../../assets/images/fb.png")} />
+        <Image source={require("./../../assets/images/google.png")} />
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 50,
+        }}
+      >
+        <ReusableText
+          text={"Haven't an account?"}
+          family={"regular"}
+          size={SIZES.small}
+          color={"gray"}
+        />
+
+        <ReusableText
+          text={" Register"}
+          family={"regular"}
+          size={SIZES.small}
+          color={"#356899"}
+        />
+      </View>
+        
+    </SafeAreaView>
+  );
+};
+
+export default Index;
+
+const styles = StyleSheet.create({
+  input: {
+    backgroundColor: COLORS.gray,
+    borderRadius: 10,
+    padding: 10,
+  },
+});
